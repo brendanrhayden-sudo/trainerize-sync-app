@@ -7,7 +7,10 @@
       "Bash(npm run test:basic:*)",
       "Bash(curl:*)",
       "Bash(tsx scripts/setup-database-schema.ts:*)",
-      "Bash(git init:*)"
+      "Bash(git init:*)",
+      "Bash(git commit:*)",
+      "Bash(git config:*)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []
