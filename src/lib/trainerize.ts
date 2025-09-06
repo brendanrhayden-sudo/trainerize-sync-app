@@ -1,8 +1,9 @@
-import type { 
-  TrainerizeExercise, 
-  TrainerizeApiResponse, 
-  TrainerizeApiError 
-} from '@/types/trainerize'
+// Unused types - keeping commented for future use
+// import type { 
+//   TrainerizeExercise, 
+//   TrainerizeApiResponse, 
+//   TrainerizeApiError 
+// } from '@/types/trainerize'
 
 class TrainerizeAPI {
   private baseUrl: string

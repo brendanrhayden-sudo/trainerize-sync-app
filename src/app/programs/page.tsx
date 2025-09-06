@@ -33,8 +33,6 @@ import {
   Plus, 
   MoreHorizontal, 
   RefreshCw, 
-  Download, 
-  Upload,
   Edit,
   Trash2,
   Copy,
@@ -44,7 +42,6 @@ import {
   AlertCircle,
   Calendar,
   Users,
-  BarChart3,
   Target,
   Clock
 } from "lucide-react"

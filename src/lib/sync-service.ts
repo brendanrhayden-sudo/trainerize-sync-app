@@ -1,6 +1,6 @@
 import { supabaseAdmin } from './supabase'
 import { schemaInspector } from './schema-inspector'
-import { trainerizeApi } from './trainerize'
+// import { trainerizeApi } from './trainerize' // Not used in current implementation
 
 export interface SyncOperation {
   id: string

@@ -10,7 +10,13 @@
       "Bash(git init:*)",
       "Bash(git commit:*)",
       "Bash(git config:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(gh auth:*)",
+      "Bash(brew install:*)",
+      "Bash(gh repo create:*)",
+      "Bash(git push:*)",
+      "Bash(gh repo sync:*)",
+      "Bash(npm run lint)"
     ],
     "deny": [],
     "ask": []

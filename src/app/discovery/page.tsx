@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -59,15 +59,8 @@ export default function DiscoveryPage() {
   const [endId, setEndId] = useState(10000)
   const [discoveredExercises, setDiscoveredExercises] = useState<any[]>([])
   
-  const eventSourceRef = useRef<EventSource | null>(null)
-
   useEffect(() => {
     loadData()
-    return () => {
-      if (eventSourceRef.current) {
-        eventSourceRef.current.close()
-      }
-    }
   }, [])
 
   const loadData = async () => {

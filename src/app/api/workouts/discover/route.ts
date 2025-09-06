@@ -16,7 +16,7 @@ export async function POST() {
     const fullReport = {
       ...analysis,
       investigations,
-      summary: generateSummary(analysis, investigations)
+      summary: generateSummary(analysis)
     };
     
     return NextResponse.json({
@@ -71,7 +71,7 @@ async function runSpecificInvestigations() {
   return investigations;
 }
 
-function generateSummary(analysis: any, investigations: any) {
+function generateSummary(analysis: any) {
   return {
     totalFieldsFound: analysis.structure?.commonFields?.length || 0,
     integerArrayFields: analysis.structure?.integerArrayFields || [],

@@ -426,6 +426,7 @@ export class TrainerizeProgramManager {
   }
 
   // Full sync with Trainerize API
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async exportToTrainerize(programId: string, clientId: string): Promise<ExportResult> {
     try {
       const program = await this.getProgram(programId);
@@ -439,12 +440,12 @@ export class TrainerizeProgramManager {
       }
 
       // Export to Trainerize (this would need actual Trainerize API implementation)
-      const trainerizeProgramData = {
-        name: program.name,
-        description: program.description,
-        clientId: clientId,
-        durationWeeks: program.duration_weeks
-      };
+      // const trainerizeProgramData = {
+      //   name: program.name,
+      //   description: program.description,
+      //   clientId: clientId,
+      //   durationWeeks: program.duration_weeks
+      // };
 
       // For now, simulate the export
       const trainerizeProgramId = `trainerize_${Date.now()}`;

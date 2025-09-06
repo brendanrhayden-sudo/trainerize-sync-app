@@ -250,7 +250,7 @@ export class WorkoutTemplateDiscovery {
           });
           
           console.log(`✓ Got details for template ${id}`);
-        } catch (error) {
+        } catch {
           console.log(`✗ Could not get details for template ${id}`);
         }
         

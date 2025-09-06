@@ -103,13 +103,14 @@ interface RateLimitOptions {
   retryDelay: number
 }
 
-interface DiscoveryOptions {
-  startId: number
-  endId: number
-  batchSize: number
-  onProgress?: (found: number, checked: number) => void
-  onExerciseFound?: (exercise: TrainerizeExercise) => void
-}
+// DiscoveryOptions interface - currently unused but kept for future implementation
+// interface DiscoveryOptions {
+//   startId: number
+//   endId: number
+//   batchSize: number
+//   onProgress?: (found: number, checked: number) => void
+//   onExerciseFound?: (exercise: TrainerizeExercise) => void
+// }
 
 export class TrainerizeClient {
   private baseUrl: string

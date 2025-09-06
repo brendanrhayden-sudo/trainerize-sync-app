@@ -112,7 +112,7 @@ class SystemTester {
     
     try {
       // Test authentication
-      const authTest = await this.trainerizeClient.makeRequest('/exercise/getList', 'POST', {
+      await this.trainerizeClient.makeRequest('/exercise/getList', 'POST', {
         start: 0,
         count: 1
       })

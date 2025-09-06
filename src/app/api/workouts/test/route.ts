@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
       });
       
       // Analyze the response for integer arrays
-      results.decodedData.template = await decodeIntegerArrays(templateData, client);
+      results.decodedData.template = await decodeIntegerArrays(templateData);
       
     } catch (error: any) {
       results.tests.push({
@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
           data: altData
         });
         
-        results.decodedData[alt.endpoint] = await decodeIntegerArrays(altData, client);
+        results.decodedData[alt.endpoint] = await decodeIntegerArrays(altData);
         
       } catch (error: any) {
         results.tests.push({
@@ -109,7 +109,7 @@ export async function POST(request: NextRequest) {
 }
 
 // Helper function to identify and decode integer arrays
-async function decodeIntegerArrays(data: any, client: TrainerizeClient): Promise<any> {
+async function decodeIntegerArrays(data: any): Promise<any> {
   const decoded: any = {};
   
   function processObject(obj: any, path: string = ''): void {
@@ -191,7 +191,7 @@ async function decodeExerciseIds(exerciseIds: number[], client: TrainerizeClient
         try {
           exerciseData = await client.makeRequest(endpoint, 'POST', { id });
           break;
-        } catch (e) {
+        } catch {
           continue;
         }
       }

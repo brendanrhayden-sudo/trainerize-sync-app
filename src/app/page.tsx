@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { RefreshCw, Download, Upload, Plus } from 'lucide-react'
+import React from 'react'
+import { RefreshCw, Upload, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { toast } from 'sonner'
@@ -34,7 +34,7 @@ export default function Dashboard() {
       await startSync('manual')
       toast.success('Sync completed successfully!')
       await refetch()
-    } catch (error) {
+    } catch {
       toast.error('Sync failed. Please try again.')
     }
   }
@@ -43,7 +43,7 @@ export default function Dashboard() {
     try {
       await deleteExercise(id)
       toast.success('Exercise deleted successfully!')
-    } catch (error) {
+    } catch {
       toast.error('Failed to delete exercise')
     }
   }
@@ -61,7 +61,7 @@ export default function Dashboard() {
       
       const label = operationLabels[operation as keyof typeof operationLabels] || operation
       toast.success(`Exercises ${label} successfully!`)
-    } catch (error) {
+    } catch {
       toast.error(`Failed to ${operation} exercises`)
     }
   }

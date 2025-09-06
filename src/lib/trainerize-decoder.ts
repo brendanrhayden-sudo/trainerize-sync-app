@@ -230,7 +230,7 @@ export class TrainerizeDecoder {
           try {
             exerciseData = await this.client.makeRequest(endpoint, 'POST', { id });
             break;
-          } catch (e) {
+          } catch {
             continue;
           }
         }
@@ -322,7 +322,7 @@ export class TrainerizeDecoder {
           try {
             userData = await this.client.makeRequest(endpoint, 'POST', { id });
             break;
-          } catch (e) {
+          } catch {
             continue;
           }
         }
@@ -348,7 +348,7 @@ export class TrainerizeDecoder {
         // Rate limiting
         await new Promise(resolve => setTimeout(resolve, 300));
 
-      } catch (error) {
+      } catch {
         results.push({
           id,
           name: `User ${id}`,
