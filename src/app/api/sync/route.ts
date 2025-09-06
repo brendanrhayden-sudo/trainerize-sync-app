@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
 import { trainerizeApi } from '@/lib/trainerize'
-import type { ApiResponse, SyncLog, Exercise } from '@/types'
+import type { ApiResponse, Exercise } from '@/types'
 import type { TrainerizeExercise } from '@/types/trainerize'
 
 export async function POST(request: NextRequest) {

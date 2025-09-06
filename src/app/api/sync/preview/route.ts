@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { syncService } from '@/lib/sync-service'
 import type { ApiResponse } from '@/types'
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     // Initialize the sync service
     await syncService.initialize()

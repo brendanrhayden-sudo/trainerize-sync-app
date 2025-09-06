@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { WorkoutTemplateDiscovery } from '@/lib/trainerize-workout-discovery';
 
-export async function POST(request: NextRequest) {
+export async function POST() {
   const discovery = new WorkoutTemplateDiscovery();
   
   try {
