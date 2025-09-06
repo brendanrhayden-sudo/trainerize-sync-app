@@ -50,7 +50,7 @@ export default function ExerciseManagePage() {
         return
       }
 
-      setExercises(data || [])
+      setExercises((data || []) as Exercise[])
     } catch (error) {
       console.error('Error loading exercises:', error)
     } finally {

@@ -74,7 +74,7 @@ class SystemTester {
 
       if (!connectionError) {
         // Test table existence
-        const tables = ['exercises', 'sync_logs', 'workout_templates']
+        const tables = ['exercises', 'sync_logs'] as const
         for (const table of tables) {
           try {
             const { data, error } = await supabaseAdmin
@@ -112,7 +112,7 @@ class SystemTester {
     
     try {
       // Test authentication
-      await this.trainerizeClient.makeRequest('/exercise/getList', 'POST', {
+      await this.trainerizeClient.makeRequest('/exercise/getList', {
         start: 0,
         count: 1
       })
@@ -131,7 +131,7 @@ class SystemTester {
 
       for (const endpoint of endpoints) {
         try {
-          const result = await this.trainerizeClient.makeRequest(endpoint.path, 'POST', {
+          const result = await this.trainerizeClient.makeRequest(endpoint.path, {
             start: 0,
             count: 5
           })
@@ -230,7 +230,7 @@ class SystemTester {
         const exercise = exercises[0]
         
         // Test field mapping
-        const hasRequiredFields = exercise.name && exercise.id
+        const hasRequiredFields = !!(exercise.name && exercise.id)
         this.addResult({
           test: 'Exercise data structure',
           success: hasRequiredFields,

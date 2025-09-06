@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
     console.log(`Testing template ID: ${templateId}`);
     
     try {
-      const templateData = await client.makeRequest('/workoutTemplate/get', 'POST', { id: templateId });
+      const templateData = await client.makeRequest('/workoutTemplate/get', { id: templateId });
       
       results.tests.push({
         test: 'Get Template Details',
@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
 
     for (const alt of alternativeEndpoints) {
       try {
-        const altData = await client.makeRequest(alt.endpoint, 'POST', alt.params);
+        const altData = await client.makeRequest(alt.endpoint, alt.params);
         
         results.tests.push({
           test: `Alternative endpoint: ${alt.endpoint}`,
@@ -189,7 +189,7 @@ async function decodeExerciseIds(exerciseIds: number[], client: TrainerizeClient
       
       for (const endpoint of endpoints) {
         try {
-          exerciseData = await client.makeRequest(endpoint, 'POST', { id });
+          exerciseData = await client.makeRequest(endpoint, { id });
           break;
         } catch {
           continue;

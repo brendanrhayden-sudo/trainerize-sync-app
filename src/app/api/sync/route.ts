@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
-import { trainerizeApi } from '@/lib/trainerize'
+import { trainerizeClient, type TrainerizeExercise } from '@/lib/trainerize-client'
 import type { ApiResponse, Exercise } from '@/types'
-import type { TrainerizeExercise } from '@/types/trainerize'
 
 export async function POST(request: NextRequest) {
   try {
@@ -29,21 +28,13 @@ export async function POST(request: NextRequest) {
     }
 
     try {
-      await trainerizeApi.authenticate()
-      
-      let page = 1
-      let hasMorePages = true
       let totalProcessed = 0
       let totalCreated = 0
       let totalUpdated = 0
 
-      while (hasMorePages) {
-        const trainerizeResponse = await trainerizeApi.getExercises({
-          page,
-          per_page: 50
-        })
-
-        const exercises = trainerizeResponse.data
+      // Discover exercises from plans (using default group ID)
+      const groupId = parseInt(process.env.TRAINERIZE_GROUP_ID || '0')
+      const exercises = await trainerizeClient.discoverExercisesFromPlans([groupId])
         
         for (const trainerizeExercise of exercises) {
           try {
@@ -88,11 +79,6 @@ export async function POST(request: NextRequest) {
             console.error(`Error processing exercise ${trainerizeExercise.id}:`, exerciseError)
           }
         }
-
-        hasMorePages = trainerizeResponse.pagination ? 
-          page < trainerizeResponse.pagination.total_pages : false
-        page++
-      }
 
       await supabase
         .from('sync_logs')
@@ -141,19 +127,21 @@ export async function POST(request: NextRequest) {
   }
 }
 
-function mapTrainerizeToSupabase(trainerizeExercise: TrainerizeExercise): Partial<Exercise> {
+function mapTrainerizeToSupabase(trainerizeExercise: TrainerizeExercise): Omit<Exercise, 'id' | 'created_at' | 'updated_at'> {
   return {
     trainerize_id: trainerizeExercise.id,
     name: trainerizeExercise.name,
     description: trainerizeExercise.description || null,
-    category: trainerizeExercise.category?.name || null,
+    category: trainerizeExercise.category || null,
     muscle_groups: trainerizeExercise.muscle_groups || [],
-    equipment: trainerizeExercise.equipment?.map(eq => eq.name) || [],
-    instructions: trainerizeExercise.instructions || null,
-    video_url: trainerizeExercise.video?.url || null,
-    thumbnail_url: trainerizeExercise.thumbnail?.url || null,
-    difficulty_level: trainerizeExercise.difficulty_level || null,
-    is_active: trainerizeExercise.is_active,
-    metadata: trainerizeExercise.metadata || null
+    equipment: trainerizeExercise.equipment || [],
+    instructions: trainerizeExercise.instructions?.join('\n') || null,
+    video_url: trainerizeExercise.video_url || null,
+    thumbnail_url: trainerizeExercise.thumbnail_url || null,
+    difficulty_level: (trainerizeExercise.difficulty as "beginner" | "intermediate" | "advanced") || null,
+    is_active: trainerizeExercise.is_active !== false,
+    synced_at: new Date().toISOString(),
+    sync_status: 'synced' as const,
+    metadata: trainerizeExercise
   }
 }

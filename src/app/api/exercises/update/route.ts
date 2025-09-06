@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { trainerizeClient } from '@/lib/trainerize-client'
+import { trainerizeClient, type TrainerizeExerciseUpdate } from '@/lib/trainerize-client'
 import { supabaseAdmin } from '@/lib/supabase'
 import type { ApiResponse } from '@/types'
-import type { TrainerizeExerciseUpdate } from '@/types/trainerize'
 
 export async function POST(request: NextRequest) {
   try {

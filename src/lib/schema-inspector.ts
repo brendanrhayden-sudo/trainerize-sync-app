@@ -144,7 +144,7 @@ export class SchemaInspector {
     return mapping
   }
 
-  async getSampleData(tableName: string, limit: number = 5): Promise<any[]> {
+  async getSampleData(tableName: 'exercises' | 'sync_logs', limit: number = 5): Promise<any[]> {
     const { data, error } = await supabaseAdmin
       .from(tableName)
       .select('*')

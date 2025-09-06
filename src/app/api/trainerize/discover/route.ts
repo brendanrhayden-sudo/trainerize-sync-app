@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
     const { data: discoveryLog } = await supabaseAdmin
       .from('sync_logs')
       .insert([{
-        sync_type: 'discovery',
+        sync_type: 'manual',
         status: 'started',
         started_at: new Date().toISOString(),
         metadata: {
@@ -340,7 +340,7 @@ export async function GET(request: NextRequest) {
       const { data: syncLogs } = await supabaseAdmin
         .from('sync_logs')
         .select('*')
-        .eq('sync_type', 'discovery')
+        .eq('sync_type', 'manual')
         .order('started_at', { ascending: false })
         .limit(10)
 

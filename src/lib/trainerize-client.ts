@@ -21,7 +21,7 @@ export type ExerciseTag =
 export type VideoType = 'youtube' | 'vimeo'
 export type VideoStatus = 'processing' | 'ready' | 'failing'
 
-interface TrainerizeExercise {
+export interface TrainerizeExercise {
   id: string
   name: string
   description?: string
@@ -178,7 +178,7 @@ export class TrainerizeClient {
     this.lastRequestTime = Date.now()
   }
 
-  private async makeRequest<T = any>(
+  public async makeRequest<T = any>(
     endpoint: string, 
     body: any = {}, 
     attempt = 1
