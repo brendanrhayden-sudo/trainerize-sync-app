@@ -1,0 +1,19 @@
+{
+  "timestamp": "2025-09-06T18:57:48.896Z",
+  "totalTemplates": 0,
+  "structure": {
+    "commonFields": [],
+    "fieldTypes": {},
+    "arrayFields": [],
+    "integerArrayFields": [],
+    "uniqueValues": {}
+  },
+  "integerArrayPatterns": {},
+  "detailedExamples": [],
+  "recommendations": {
+    "dataModel": {},
+    "mappings": {},
+    "warnings": [],
+    "suggestions": []
+  }
+}
