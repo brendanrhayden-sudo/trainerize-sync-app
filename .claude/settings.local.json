@@ -16,7 +16,8 @@
       "Bash(gh repo create:*)",
       "Bash(git push:*)",
       "Bash(gh repo sync:*)",
-      "Bash(npm run lint)"
+      "Bash(npm run lint)",
+      "Bash(npm run dev:*)"
     ],
     "deny": [],
     "ask": []
