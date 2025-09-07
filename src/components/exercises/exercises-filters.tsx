@@ -156,7 +156,7 @@ export function ExercisesFilters({ filters, onFiltersChange, onReset }: Exercise
 
           <Select
             value={filters.syncStatus || 'all'}
-            onValueChange={(value) => onFiltersChange({ syncStatus: value === 'all' ? '' : value }))
+            onValueChange={(value) => onFiltersChange({ syncStatus: value === 'all' ? '' : value })}
           >
             <SelectTrigger className="w-[120px]">
               <SelectValue placeholder="Sync Status" />
@@ -175,7 +175,7 @@ export function ExercisesFilters({ filters, onFiltersChange, onReset }: Exercise
             value={filters.isActive === null ? 'all' : filters.isActive.toString()}
             onValueChange={(value) => onFiltersChange({ 
               isActive: value === 'all' ? null : value === 'true' 
-            }))
+            })}
           >
             <SelectTrigger className="w-[100px]">
               <SelectValue placeholder="Status" />
