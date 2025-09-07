@@ -228,7 +228,7 @@ export class TrainerizeDecoder {
 
         for (const endpoint of endpoints) {
           try {
-            exerciseData = await this.client.makeRequest(endpoint, 'POST', { id });
+            exerciseData = await this.client.makeRequest(endpoint, { id });
             break;
           } catch {
             continue;
@@ -320,7 +320,7 @@ export class TrainerizeDecoder {
 
         for (const endpoint of endpoints) {
           try {
-            userData = await this.client.makeRequest(endpoint, 'POST', { id });
+            userData = await this.client.makeRequest(endpoint, { id });
             break;
           } catch {
             continue;

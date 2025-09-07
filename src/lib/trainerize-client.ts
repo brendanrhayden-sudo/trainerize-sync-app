@@ -871,8 +871,8 @@ export class TrainerizeClient {
           const trainerizeFormat: TrainerizeExerciseUpdate = {
             id: parseInt(exercise.trainerize_id),
             name: exercise.name,
-            description: exercise.description,
-            recordType: this.mapToRecordType(exercise.category),
+            description: exercise.description || undefined,
+            recordType: this.mapToRecordType(exercise.category || undefined),
             tag: this.mapToTag(exercise.muscle_groups),
             videoUrl: exercise.video_url || undefined,
             videoType: exercise.video_url?.includes('youtube') ? 'youtube' : 

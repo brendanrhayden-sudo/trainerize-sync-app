@@ -65,7 +65,7 @@ export class WorkoutTemplateDiscovery {
   // Fetch workout templates
   async getWorkoutTemplates(params: WorkoutTemplateListParams): Promise<any[]> {
     try {
-      const response = await this.client.makeRequest('/workoutTemplate/getList', 'POST', params);
+      const response = await this.client.makeRequest('/workoutTemplate/getList', params);
       
       // Log response structure
       console.log('Response keys:', Object.keys(response));
@@ -241,7 +241,7 @@ export class WorkoutTemplateDiscovery {
         
         try {
           // Try to get more details about this template
-          const detailResponse = await this.client.makeRequest('/workoutTemplate/get', 'POST', { id });
+          const detailResponse = await this.client.makeRequest('/workoutTemplate/get', { id });
           
           detailed.push({
             summary: template,
@@ -315,10 +315,10 @@ export class WorkoutTemplateDiscovery {
   // Generate recommendations based on analysis
   generateRecommendations(analysis: any, patterns: any): any {
     const recommendations = {
-      dataModel: {},
-      mappings: {},
-      warnings: [],
-      suggestions: []
+      dataModel: {} as Record<string, string>,
+      mappings: {} as Record<string, string>,
+      warnings: [] as string[],
+      suggestions: [] as string[]
     };
     
     // Recommend data model based on findings
@@ -346,7 +346,7 @@ export class WorkoutTemplateDiscovery {
   async saveDiscovery(name: string, data: any) {
     // Save to Supabase
     try {
-      await supabaseAdmin
+      await (supabaseAdmin as any)
         .from('api_discoveries')
         .insert({
           api: 'trainerize',
@@ -355,7 +355,7 @@ export class WorkoutTemplateDiscovery {
           data: data,
           created_at: new Date().toISOString()
         });
-    } catch (error) {
+    } catch (error: any) {
       console.log('Could not save to Supabase (table may not exist):', error.message);
     }
     
@@ -371,7 +371,7 @@ export class WorkoutTemplateDiscovery {
       );
       
       console.log(`💾 Saved discovery: ${filename}`);
-    } catch (error) {
+    } catch (error: any) {
       console.log('Could not save to file system:', error.message);
     }
   }

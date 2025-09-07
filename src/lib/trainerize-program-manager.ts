@@ -106,7 +106,17 @@ export class TrainerizeProgramManager {
       throw new Error(`Failed to create program: ${error.message}`);
     }
 
-    return data;
+    return {
+      ...data,
+      description: data.description || undefined,
+      difficulty_level: data.difficulty_level || undefined,
+      duration_weeks: data.duration_weeks || undefined,
+      goals: data.goals || undefined,
+      equipment_required: data.equipment_required || undefined,
+      trainerize_program_id: data.trainerize_program_id || undefined,
+      sync_status: data.sync_status || undefined,
+      synced_at: data.synced_at || undefined
+    };
   }
 
   async getProgram(programId: string): Promise<Program | null> {
@@ -121,7 +131,17 @@ export class TrainerizeProgramManager {
       throw new Error(`Failed to get program: ${error.message}`);
     }
 
-    return data;
+    return {
+      ...data,
+      description: data.description || undefined,
+      difficulty_level: data.difficulty_level || undefined,
+      duration_weeks: data.duration_weeks || undefined,
+      goals: data.goals || undefined,
+      equipment_required: data.equipment_required || undefined,
+      trainerize_program_id: data.trainerize_program_id || undefined,
+      sync_status: data.sync_status || undefined,
+      synced_at: data.synced_at || undefined
+    };
   }
 
   async updateProgram(programId: string, updates: Partial<Program>): Promise<Program> {
@@ -139,7 +159,17 @@ export class TrainerizeProgramManager {
       throw new Error(`Failed to update program: ${error.message}`);
     }
 
-    return data;
+    return {
+      ...data,
+      description: data.description || undefined,
+      difficulty_level: data.difficulty_level || undefined,
+      duration_weeks: data.duration_weeks || undefined,
+      goals: data.goals || undefined,
+      equipment_required: data.equipment_required || undefined,
+      trainerize_program_id: data.trainerize_program_id || undefined,
+      sync_status: data.sync_status || undefined,
+      synced_at: data.synced_at || undefined
+    };
   }
 
   async deleteProgram(programId: string): Promise<void> {
@@ -170,7 +200,17 @@ export class TrainerizeProgramManager {
       throw new Error(`Failed to get programs: ${error.message}`);
     }
 
-    return data || [];
+    return (data || []).map(program => ({
+      ...program,
+      description: program.description || undefined,
+      difficulty_level: program.difficulty_level || undefined,
+      duration_weeks: program.duration_weeks || undefined,
+      goals: program.goals || undefined,
+      equipment_required: program.equipment_required || undefined,
+      trainerize_program_id: program.trainerize_program_id || undefined,
+      sync_status: program.sync_status || undefined,
+      synced_at: program.synced_at || undefined
+    }));
   }
 
   // Training plan management within programs
@@ -188,7 +228,12 @@ export class TrainerizeProgramManager {
       throw new Error(`Failed to create training plan: ${error.message}`);
     }
 
-    return data;
+    return {
+      ...data,
+      trainerize_plan_id: data.trainerize_plan_id || undefined,
+      sync_status: data.sync_status || undefined,
+      synced_at: data.synced_at || undefined
+    };
   }
 
   async getTrainingPlansForProgram(programId: string): Promise<TrainingPlan[]> {
@@ -202,7 +247,12 @@ export class TrainerizeProgramManager {
       throw new Error(`Failed to get training plans: ${error.message}`);
     }
 
-    return data || [];
+    return (data || []).map(plan => ({
+      ...plan,
+      trainerize_plan_id: plan.trainerize_plan_id || undefined,
+      sync_status: plan.sync_status || undefined,
+      synced_at: plan.synced_at || undefined
+    }));
   }
 
   // Calendar scheduling for workouts
@@ -351,7 +401,12 @@ export class TrainerizeProgramManager {
       };
     }
 
-    return data;
+    return {
+      ...data,
+      workout_selection_criteria: data.workout_selection_criteria as any,
+      program_structure: data.program_structure as { duration_weeks: number; workouts_per_week: number; session_duration: number; },
+      progression_rules: data.progression_rules as any
+    };
   }
 
   private async selectWorkoutsForProgram(assessment: ClientAssessment, rules: GenerationRules): Promise<Omit<PlanWorkout, 'id' | 'created_at'>[]> {
@@ -542,8 +597,7 @@ export class TrainerizeProgramManager {
         program_id: clonedProgram.id,
         name: plan.name,
         duration_weeks: plan.duration_weeks,
-        workouts_per_week: plan.workouts_per_week,
-        workout_schedule: plan.workout_schedule
+        workouts_per_week: plan.workouts_per_week
       });
 
       // Clone scheduled workouts

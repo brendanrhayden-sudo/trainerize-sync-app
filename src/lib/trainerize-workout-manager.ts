@@ -71,7 +71,7 @@ export class TrainerizeWorkoutManager {
   // Add a new workout definition
   async addWorkout(params: AddWorkoutRequest): Promise<any> {
     try {
-      const response = await this.client.makeRequest('/workoutDef/add', 'POST', params);
+      const response = await this.client.makeRequest('/workoutDef/add', params);
       
       if (response?.id || response?.workoutId) {
         const workoutId = response.id || response.workoutId;
@@ -93,7 +93,7 @@ export class TrainerizeWorkoutManager {
   // Update existing workout definition
   async updateWorkout(params: UpdateWorkoutRequest): Promise<any> {
     try {
-      const response = await this.client.makeRequest('/workoutDef/set', 'POST', params);
+      const response = await this.client.makeRequest('/workoutDef/set', params);
       
       // Update in Supabase
       await this.saveWorkoutToSupabase(params.workoutDef.id, params.workoutDef);
@@ -153,15 +153,15 @@ export class TrainerizeWorkoutManager {
           id: exercise.trainerize_id ? parseInt(exercise.trainerize_id) : undefined,
           name: exercise.name,
           description: exercise.description || '',
-          sets: exercise.default_sets || defaultSets,
+          sets: (exercise as any).default_sets || defaultSets,
           target: this.buildTargetString(exercise),
-          targetDetail: exercise.unilateral ? { side: 'left' } : undefined,
+          targetDetail: (exercise as any).unilateral ? { side: 'left' } : undefined,
           supersetID: supersetInfo?.id,
           supersetType: supersetInfo?.type || 'none',
-          restTime: exercise.rest_time || defaultRestTime,
+          restTime: (exercise as any).rest_time || defaultRestTime,
           recordType: this.mapToRecordType(exercise),
           type: exercise.trainerize_id ? 'system' : 'custom',
-          youTubeVideo: this.extractYouTubeId(exercise.video_url)
+          youTubeVideo: this.extractYouTubeId(exercise.video_url || undefined)
         }
       };
     });
@@ -201,7 +201,7 @@ export class TrainerizeWorkoutManager {
       throw new Error('Template not found');
     }
 
-    let exercises = template.exercises || [];
+    let exercises = (template as any).exercises || [];
     
     // Apply customizations
     if (customizations?.modifyExercises) {
@@ -229,7 +229,7 @@ export class TrainerizeWorkoutManager {
       workoutDef: {
         name: customizations?.name || template.name,
         exercises: exerciseDefs,
-        type: template.workout_type || 'workoutRegular',
+        type: (template.workout_type as any) || 'workoutRegular',
         instructions: template.instructions || ''
       }
     };
@@ -338,7 +338,7 @@ export class TrainerizeWorkoutManager {
     const { view = 'mine', count = 100 } = params;
     
     // Get workout templates
-    const templates = await this.client.makeRequest('/workoutTemplate/getList', 'POST', {
+    const templates = await this.client.makeRequest('/workoutTemplate/getList', {
       view,
       count,
       start: 0
@@ -350,7 +350,7 @@ export class TrainerizeWorkoutManager {
     const definitions = [];
     for (const id of workoutIds) {
       try {
-        const def = await this.client.makeRequest('/workoutTemplate/get', 'POST', { id });
+        const def = await this.client.makeRequest('/workoutTemplate/get', { id });
         definitions.push({ id, ...def });
         
         // Rate limiting

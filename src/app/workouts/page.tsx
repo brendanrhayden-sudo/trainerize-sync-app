@@ -82,7 +82,7 @@ export default function WorkoutManagementPage() {
         return
       }
 
-      setWorkouts(data || [])
+      setWorkouts((data || []) as Workout[])
     } catch (error) {
       console.error('Error loading workouts:', error)
     } finally {

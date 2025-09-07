@@ -427,7 +427,7 @@ export class SyncService {
     const { error } = await supabaseAdmin
       .from('sync_logs')
       .insert([{
-        sync_type: 'operation',
+        sync_type: 'manual',
         status: 'completed',
         started_at: new Date().toISOString(),
         completed_at: new Date().toISOString(),

@@ -104,7 +104,7 @@ export default function ProgramsPage() {
         avg_rating: Math.random() * 5 // TODO: Calculate actual rating
       })) || []
 
-      setPrograms(programsWithStats)
+      setPrograms(programsWithStats as ProgramWithStats[])
     } catch (error) {
       console.error('Error loading programs:', error)
     } finally {

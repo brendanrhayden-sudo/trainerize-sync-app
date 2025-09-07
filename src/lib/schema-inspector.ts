@@ -25,8 +25,8 @@ export interface TableInfo {
 
 export class SchemaInspector {
   async getTableInfo(tableName: string): Promise<TableInfo> {
-    // Get column information
-    const { data: columns, error: columnsError } = await supabaseAdmin
+    // Get column information - bypass type checking for system tables
+    const { data: columns, error: columnsError } = await (supabaseAdmin as any)
       .from('information_schema.columns')
       .select('*')
       .eq('table_name', tableName)
@@ -37,8 +37,8 @@ export class SchemaInspector {
       throw new Error(`Failed to fetch column information for table ${tableName}`)
     }
 
-    // Get constraint information
-    const { data: constraints, error: constraintsError } = await supabaseAdmin.rpc(
+    // Get constraint information - bypass type checking for RPC
+    const { data: constraints, error: constraintsError } = await (supabaseAdmin as any).rpc(
       'get_table_constraints',
       { table_name_param: tableName }
     )
@@ -49,8 +49,8 @@ export class SchemaInspector {
 
     // Get primary key columns
     const primaryKey = columns
-      ?.filter(col => col.column_name === 'id' || col.column_default?.includes('gen_random_uuid'))
-      .map(col => col.column_name) || []
+      ?.filter((col: any) => col.column_name === 'id' || col.column_default?.includes('gen_random_uuid'))
+      .map((col: any) => col.column_name) || []
 
     return {
       columns: columns || [],
@@ -68,7 +68,7 @@ export class SchemaInspector {
   }> {
     try {
       // Check if exercises table exists
-      const { data: tables, error } = await supabaseAdmin
+      const { data: tables, error } = await (supabaseAdmin as any)
         .from('information_schema.tables')
         .select('table_name')
         .eq('table_schema', 'public')
