@@ -87,14 +87,14 @@ export function ExercisesFilters({ filters, onFiltersChange, onReset }: Exercise
 
         <div className="flex flex-wrap gap-2 lg:flex-nowrap">
           <Select
-            value={filters.category}
-            onValueChange={(value) => onFiltersChange({ category: value })}
+            value={filters.category || 'all'}
+            onValueChange={(value) => onFiltersChange({ category: value === 'all' ? '' : value })}
           >
             <SelectTrigger className="w-[150px]">
               <SelectValue placeholder="Category" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Categories</SelectItem>
+              <SelectItem value="all">All Categories</SelectItem>
               {categories.map((category) => (
                 <SelectItem key={category} value={category}>
                   {category}
@@ -104,14 +104,14 @@ export function ExercisesFilters({ filters, onFiltersChange, onReset }: Exercise
           </Select>
 
           <Select
-            value={filters.muscleGroup}
-            onValueChange={(value) => onFiltersChange({ muscleGroup: value })}
+            value={filters.muscleGroup || 'all'}
+            onValueChange={(value) => onFiltersChange({ muscleGroup: value === 'all' ? '' : value })}
           >
             <SelectTrigger className="w-[150px]">
               <SelectValue placeholder="Muscle Group" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Muscle Groups</SelectItem>
+              <SelectItem value="all">All Muscle Groups</SelectItem>
               {muscleGroups.map((group) => (
                 <SelectItem key={group} value={group}>
                   {group}
@@ -121,14 +121,14 @@ export function ExercisesFilters({ filters, onFiltersChange, onReset }: Exercise
           </Select>
 
           <Select
-            value={filters.equipment}
-            onValueChange={(value) => onFiltersChange({ equipment: value })}
+            value={filters.equipment || 'all'}
+            onValueChange={(value) => onFiltersChange({ equipment: value === 'all' ? '' : value })}
           >
             <SelectTrigger className="w-[150px]">
               <SelectValue placeholder="Equipment" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Equipment</SelectItem>
+              <SelectItem value="all">All Equipment</SelectItem>
               {equipment.map((eq) => (
                 <SelectItem key={eq} value={eq}>
                   {eq}
@@ -138,14 +138,14 @@ export function ExercisesFilters({ filters, onFiltersChange, onReset }: Exercise
           </Select>
 
           <Select
-            value={filters.difficultyLevel}
-            onValueChange={(value) => onFiltersChange({ difficultyLevel: value })}
+            value={filters.difficultyLevel || 'all'}
+            onValueChange={(value) => onFiltersChange({ difficultyLevel: value === 'all' ? '' : value })}
           >
             <SelectTrigger className="w-[120px]">
               <SelectValue placeholder="Difficulty" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Levels</SelectItem>
+              <SelectItem value="all">All Levels</SelectItem>
               {difficultyLevels.map((level) => (
                 <SelectItem key={level.value} value={level.value}>
                   {level.label}
@@ -155,14 +155,14 @@ export function ExercisesFilters({ filters, onFiltersChange, onReset }: Exercise
           </Select>
 
           <Select
-            value={filters.syncStatus}
-            onValueChange={(value) => onFiltersChange({ syncStatus: value })}
+            value={filters.syncStatus || 'all'}
+            onValueChange={(value) => onFiltersChange({ syncStatus: value === 'all' ? '' : value }))
           >
             <SelectTrigger className="w-[120px]">
               <SelectValue placeholder="Sync Status" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Statuses</SelectItem>
+              <SelectItem value="all">All Statuses</SelectItem>
               {syncStatuses.map((status) => (
                 <SelectItem key={status.value} value={status.value}>
                   {status.label}
@@ -172,16 +172,16 @@ export function ExercisesFilters({ filters, onFiltersChange, onReset }: Exercise
           </Select>
 
           <Select
-            value={filters.isActive === null ? '' : filters.isActive.toString()}
+            value={filters.isActive === null ? 'all' : filters.isActive.toString()}
             onValueChange={(value) => onFiltersChange({ 
-              isActive: value === '' ? null : value === 'true' 
-            })}
+              isActive: value === 'all' ? null : value === 'true' 
+            }))
           >
             <SelectTrigger className="w-[100px]">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All</SelectItem>
+              <SelectItem value="all">All</SelectItem>
               <SelectItem value="true">Active</SelectItem>
               <SelectItem value="false">Inactive</SelectItem>
             </SelectContent>
