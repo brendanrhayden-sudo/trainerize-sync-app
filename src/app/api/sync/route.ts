@@ -1,10 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { supabase, isSupabaseConfigured } from '@/lib/supabase'
 import { trainerizeClient, type TrainerizeExercise } from '@/lib/trainerize-client'
 import type { ApiResponse, Exercise } from '@/types'
 
 export async function POST(request: NextRequest) {
   try {
+    // Return error if Supabase isn't configured
+    if (!isSupabaseConfigured()) {
+      return NextResponse.json(
+        { success: false, error: 'Database not configured. Please set up environment variables.' } as ApiResponse,
+        { status: 503 }
+      )
+    }
+
     const { type = 'manual' } = await request.json()
     
     const syncLogInsert = {

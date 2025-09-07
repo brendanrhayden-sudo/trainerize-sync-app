@@ -20,7 +20,8 @@
       "Bash(npm run dev:*)",
       "Bash(echo:*)",
       "Bash(env)",
-      "Bash(NODE_ENV=production npm run build)"
+      "Bash(NODE_ENV=production npm run build)",
+      "Bash(npm start)"
     ],
     "deny": [],
     "ask": []

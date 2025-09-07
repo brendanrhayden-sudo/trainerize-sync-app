@@ -1,10 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabaseAdmin } from '@/lib/supabase'
+import { supabaseAdmin, isSupabaseConfigured } from '@/lib/supabase'
 import { schemaInspector } from '@/lib/schema-inspector'
 import type { ApiResponse } from '@/types'
 
 export async function GET(request: NextRequest) {
   try {
+    // Return empty result if Supabase isn't configured
+    if (!isSupabaseConfigured()) {
+      return NextResponse.json({
+        success: true,
+        data: {
+          exercises: [],
+          pagination: {
+            page: 1,
+            pageSize: 10,
+            total: 0,
+            totalPages: 0
+          },
+          schema_info: {
+            columns: [],
+            column_mapping: {}
+          }
+        }
+      } as ApiResponse)
+    }
+
     const { searchParams } = new URL(request.url)
     const page = parseInt(searchParams.get('page') || '1')
     const pageSize = Math.min(parseInt(searchParams.get('pageSize') || '10'), 100) // Limit page size
@@ -123,6 +143,14 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    // Return error if Supabase isn't configured
+    if (!isSupabaseConfigured()) {
+      return NextResponse.json(
+        { success: false, error: 'Database not configured. Please set up environment variables.' } as ApiResponse,
+        { status: 503 }
+      )
+    }
+
     const body = await request.json()
     
     // Validate that we have required fields

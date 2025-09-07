@@ -6,26 +6,41 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-anon-key'
 const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'placeholder-service-key'
 
+// Check if configuration is valid
+export const isSupabaseConfigured = () => {
+  return supabaseUrl !== 'https://placeholder.supabase.co' && 
+         supabaseAnonKey !== 'placeholder-anon-key'
+}
+
 // Create clients with fallback values - they will work for build but fail gracefully at runtime if not configured
 export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey)
 export const supabaseAdmin = createClient<Database>(supabaseUrl, supabaseServiceRoleKey)
 
 // Runtime validation function for actual usage
 export const validateSupabaseConfig = () => {
-  if (typeof window !== 'undefined' || process.env.NODE_ENV !== 'development') {
-    // Only validate in runtime scenarios that need real connections
-    if (supabaseUrl === 'https://placeholder.supabase.co') {
-      console.warn('Supabase not configured: NEXT_PUBLIC_SUPABASE_URL is missing')
-      return false
+  if (!isSupabaseConfigured()) {
+    if (typeof window !== 'undefined') {
+      console.warn('Supabase not configured. Some features may not work.')
     }
-    if (supabaseAnonKey === 'placeholder-anon-key') {
-      console.warn('Supabase not configured: NEXT_PUBLIC_SUPABASE_ANON_KEY is missing')
-      return false
-    }
-    if (supabaseServiceRoleKey === 'placeholder-service-key') {
-      console.warn('Supabase not configured: SUPABASE_SERVICE_ROLE_KEY is missing')
-      return false
-    }
+    return false
   }
   return true
+}
+
+// Safe wrapper for Supabase operations
+export const safeSupabaseOperation = async <T>(
+  operation: () => Promise<T>,
+  fallback: T
+): Promise<T> => {
+  if (!isSupabaseConfigured()) {
+    console.warn('Supabase not configured, using fallback value')
+    return fallback
+  }
+  
+  try {
+    return await operation()
+  } catch (error) {
+    console.error('Supabase operation failed:', error)
+    return fallback
+  }
 }
