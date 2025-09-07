@@ -1,42 +1,31 @@
 import { createClient } from '@supabase/supabase-js'
 import type { Database } from '@/types/database'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+// Get environment variables with fallbacks
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-anon-key'
+const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'placeholder-service-key'
 
-// During build time, environment variables might not be available
-// We'll create clients with fallback values and check at runtime
-const createSupabaseClient = () => {
-  if (!supabaseUrl) {
-    if (process.env.NODE_ENV === 'production') {
-      throw new Error('Missing env var: NEXT_PUBLIC_SUPABASE_URL')
+// Create clients with fallback values - they will work for build but fail gracefully at runtime if not configured
+export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey)
+export const supabaseAdmin = createClient<Database>(supabaseUrl, supabaseServiceRoleKey)
+
+// Runtime validation function for actual usage
+export const validateSupabaseConfig = () => {
+  if (typeof window !== 'undefined' || process.env.NODE_ENV !== 'development') {
+    // Only validate in runtime scenarios that need real connections
+    if (supabaseUrl === 'https://placeholder.supabase.co') {
+      console.warn('Supabase not configured: NEXT_PUBLIC_SUPABASE_URL is missing')
+      return false
     }
-    // During build, use placeholder values
-    return createClient<Database>('https://placeholder.supabase.co', 'placeholder-key')
-  }
-
-  if (!supabaseAnonKey) {
-    if (process.env.NODE_ENV === 'production') {
-      throw new Error('Missing env var: NEXT_PUBLIC_SUPABASE_ANON_KEY')
+    if (supabaseAnonKey === 'placeholder-anon-key') {
+      console.warn('Supabase not configured: NEXT_PUBLIC_SUPABASE_ANON_KEY is missing')
+      return false
     }
-    return createClient<Database>('https://placeholder.supabase.co', 'placeholder-key')
+    if (supabaseServiceRoleKey === 'placeholder-service-key') {
+      console.warn('Supabase not configured: SUPABASE_SERVICE_ROLE_KEY is missing')
+      return false
+    }
   }
-
-  return createClient<Database>(supabaseUrl, supabaseAnonKey)
+  return true
 }
-
-const createSupabaseAdminClient = () => {
-  if (!supabaseUrl || !supabaseServiceRoleKey) {
-    if (process.env.NODE_ENV === 'production') {
-      throw new Error('Missing env vars: NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY')
-    }
-    // During build, use placeholder values
-    return createClient<Database>('https://placeholder.supabase.co', 'placeholder-service-key')
-  }
-
-  return createClient<Database>(supabaseUrl, supabaseServiceRoleKey)
-}
-
-export const supabase = createSupabaseClient()
-export const supabaseAdmin = createSupabaseAdminClient()

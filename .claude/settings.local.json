@@ -17,7 +17,10 @@
       "Bash(git push:*)",
       "Bash(gh repo sync:*)",
       "Bash(npm run lint)",
-      "Bash(npm run dev:*)"
+      "Bash(npm run dev:*)",
+      "Bash(echo:*)",
+      "Bash(env)",
+      "Bash(NODE_ENV=production npm run build)"
     ],
     "deny": [],
     "ask": []
